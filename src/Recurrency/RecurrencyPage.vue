@@ -4,6 +4,10 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
+        <!-- eslint-disable-next-line vue/no-deprecated-slot-attribute -->
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
         <ion-title>Recurrency</ion-title>
         <!-- eslint-disable-next-line vue/no-deprecated-slot-attribute -->
         <ion-buttons slot="end">
@@ -66,7 +70,7 @@
 <script setup lang="ts">
 
   // import { RouterLink, RouterView } from 'vue-router'
-  import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonButton, IonIcon, alertController, modalController } from '@ionic/vue';
+  import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonButton, IonIcon, IonMenuButton, alertController, modalController } from '@ionic/vue';
   import { addOutline } from "ionicons/icons"
   import RecurrencyItem from './RecurrencyItem.vue';
   import { MOCK_DATA } from './Recurrency.model';

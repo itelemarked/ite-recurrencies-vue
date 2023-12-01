@@ -11,7 +11,8 @@ import { router } from './router'
 const app = createApp(App)
 
 app.use(createPinia())
-app.use(IonicVue)
+// scrollAssist: false --> fix delayed ion-input focus
+app.use(IonicVue, { scrollAssist: false })
 app.use(router)
 
 router.isReady().then(() => {
