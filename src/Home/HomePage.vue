@@ -1,10 +1,10 @@
 <script setup lang="ts">
 // import { RouterLink, RouterView } from 'vue-router'
-import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
 </script>
 
 <template>
-  <div class="app-home ion-page">
+  <ion-page>
     <ion-header>
       <ion-toolbar>
         <ion-title>Home</ion-title>
@@ -14,7 +14,7 @@ import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
     <ion-content>
       Home works!!
     </ion-content>
-  </div>
+  </ion-page>
 </template>
 
 <style scoped>
