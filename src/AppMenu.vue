@@ -1,9 +1,4 @@
 
-<script setup lang="ts">
-import { IonMenu, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
-import { RouterLink } from 'vue-router';
-defineProps(['contentId'])
-</script>
 
 
 <template>
@@ -14,12 +9,16 @@ defineProps(['contentId'])
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
-      <p>
-        <router-link to="/">home</router-link>
-      </p>
-      <p>
-        <router-link to="/recurrency">recurrency</router-link>
-      </p>
+      <ion-menu-toggle>
+        <p>
+          <router-link to="/">home</router-link>
+        </p>
+      </ion-menu-toggle>
+      <ion-menu-toggle>
+        <p>
+          <router-link to="/recurrency">recurrency</router-link>
+        </p>
+      </ion-menu-toggle>
     </ion-content>
   </ion-menu>
 </template>
@@ -29,3 +28,11 @@ defineProps(['contentId'])
 <style scoped>
 
 </style>
+
+
+
+<script setup lang="ts">
+import { IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonMenuToggle } from '@ionic/vue';
+import { RouterLink } from 'vue-router';
+defineProps(['contentId'])
+</script>
