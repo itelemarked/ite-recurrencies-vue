@@ -1,5 +1,6 @@
 import { expect, test } from "vitest"
 import { DateTime } from "./Recurrency/models/DateTime"
+import { Recurrency } from "./Recurrency/models/Recurrency"
 
 
 test('DateTime.diff(), test 1', () => {
@@ -19,3 +20,6 @@ test('DateTime.diff(), test 3', () => {
   const dt2 = DateTime.create({dateString: '2027-06-01'})
   expect(DateTime.diff(dt1, dt2, 'months')).toBe(48)
 })
+
+
+

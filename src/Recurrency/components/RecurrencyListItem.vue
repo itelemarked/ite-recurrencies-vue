@@ -34,35 +34,39 @@
 <script setup lang="ts">
   import { IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, IonIcon, IonProgressBar } from '@ionic/vue';
   import { createOutline, trashOutline } from 'ionicons/icons';
-  import type { Recurrency } from '../models/Recurrency';
+  import { Recurrency } from '../models/Recurrency';
   import { computed } from 'vue';
+  import { OFFSET_STRING } from '../services/SettingsService';
 
-  const props = defineProps<{recurrency: Recurrency}>()
+  const props = defineProps<{
+    recurrency: Recurrency
+  }>()
   const emits = defineEmits<{
     delete: [id: number]
     edit: [value: string]
   }>()
   
-  const OFFSET = '+01:00'
 
   const title = computed(() => props.recurrency.title)
-  const lastEvent = computed(() => props.recurrency.lastEvent.getCHDateString(OFFSET))
+  const lastEvent = computed(() => props.recurrency.lastEvent.getCHDateString(OFFSET_STRING))
   const periodString = computed(() => {
     const nb = props.recurrency.period.nb;
     const unit = props.recurrency.period.unit;
     const unitString = nb <= 1 ? singular(unit) : plural(unit)
     return `${nb} ${unitString}`
   })
-  const expiry = computed(() => {
-    /**
-     * expiry corresponds to the moment when the recurrency has shortly expired! --> concretely, 1 milliseconds after the recurrency period, bringing it on the next day...
-     */
-    const { lastEvent } = props.recurrency
-    const { nb, unit } = props.recurrency.period
-    console.log(`lastEvent: ${lastEvent.getFullString(OFFSET)}`)
-    console.log(`expiry: ${lastEvent.add(nb, unit).add(1, 'milliseconds').getFullString(OFFSET)}`)
-    return lastEvent.add(nb, unit).add(1, 'milliseconds').getCHDateString(OFFSET)
-  })
+  // const expiry = computed(() => {
+  //   /**
+  //    * expiry corresponds to the moment when the recurrency has shortly expired! --> concretely, 1 milliseconds after the recurrency period, bringing it on the next day...
+  //    */
+  //   const { lastEvent } = props.recurrency
+  //   const { nb, unit } = props.recurrency.period
+  //   return lastEvent.add(nb, unit).add(1, 'milliseconds').getCHDateString(OFFSET)
+  // })
+  const expiry = computed(() => props.recurrency.getExpiry().getCHDateString(OFFSET_STRING))
+
+  // TODO
+  // const progress = computed(() => {})
 
   function onSlidingItemButtonClick(role: 'edit' | 'delete') {}
 

@@ -29,6 +29,9 @@
 import { IonApp, IonPage, IonRouterOutlet, IonSplitPane } from '@ionic/vue';
 import AppMenu from './AppMenu.vue'
 import { onMounted } from 'vue';
+import { Recurrency } from './Recurrency/models/Recurrency';
+import { DateTime } from './Recurrency/models/DateTime';
+import { OFFSET_STRING } from './Recurrency/services/SettingsService';
 
 onMounted(() => {
   // const d = DateTime.create({dateString: '2023-12-08', offsetString: '+01:00'}).add(1, 'milliseconds')
@@ -59,6 +62,9 @@ onMounted(() => {
   // console.log(d.getFullString('+02:00'))
 
   // recurrencyDataService.getAll().then(console.log)
+
+  // const r = new Recurrency('aaa', 'aaa', DateTime.create({dateString: '2023-12-08', offsetString: '+01:00'}), {nb: 2, unit: 'days'})
+  // console.log(r.getExpiry().getCHDateString(OFFSET_STRING))
 })
 
 </script>
