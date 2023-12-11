@@ -11,11 +11,11 @@
     </ion-item>
     
     <ion-item-options>
-      <ion-item-option color="light" @click="$emit('edit')">
+      <ion-item-option color="light" @click="onSlidingItemButtonClick('edit')">
         <!--eslint-disable-next-line vue/no-deprecated-slot-attribute-->
         <ion-icon slot="icon-only" :icon="createOutline"></ion-icon>
       </ion-item-option>
-      <ion-item-option color="danger" @click="$emit('delete')">
+      <ion-item-option color="danger" @click="onSlidingItemButtonClick('delete')">
         <!--eslint-disable-next-line vue/no-deprecated-slot-attribute-->
         <ion-icon slot="icon-only" :icon="trashOutline"></ion-icon>
       </ion-item-option>
@@ -38,8 +38,11 @@
   import { computed, ref } from 'vue';
   import { OFFSET_STRING } from '../services/SettingsService';
   import { DateTime } from '../models/DateTime';
-import { emit } from 'process';
 
+  /**
+    inputs/outputs
+  */
+  
   const props = defineProps<{
     recurrency: Recurrency
   }>()
@@ -48,6 +51,15 @@ import { emit } from 'process';
     delete: []
     edit: []
   }>()
+
+  const onSlidingItemButtonClick = async (role: 'edit' | 'delete') => {
+    itemSlidingRef.value.$el.close()
+    emit(role)
+  }
+
+  /*
+    Template variables
+  */
   
   const itemSlidingRef = ref()
 
@@ -78,12 +90,10 @@ import { emit } from 'process';
     return remainingDaysRounded <= 1 ? `${remainingDaysRounded} day left` : `${remainingDaysRounded} days left`
   })
 
-  // TODO
-  // async function onSlidingItemButtonClick(role: 'edit' | 'delete') {
-  //   itemSlidingRef.value.close()
-  //   console.log(role)
-  // }
-
+  /*
+    utils
+  */
+  
   function singular(str: string): string {
     if (str[str.length - 1] === 's') return str.slice(0, -1);
     return str;
