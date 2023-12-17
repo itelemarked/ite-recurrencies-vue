@@ -19,6 +19,11 @@
           <router-link to="/recurrency">recurrency</router-link>
         </p>
       </ion-menu-toggle>
+      <ion-menu-toggle>
+        <p>
+          <router-link to="/auth">auth</router-link>
+        </p>
+      </ion-menu-toggle>
     </ion-content>
   </ion-menu>
 </template>

@@ -47,14 +47,14 @@
     recurrency: Recurrency
   }>()
 
-  const emits = defineEmits<{
+  const emit = defineEmits<{
     delete: []
     edit: []
   }>()
 
   const onSlidingItemButtonClick = async (role: 'edit' | 'delete') => {
     itemSlidingRef.value.$el.close()
-    emit(role)
+    emit('edit')
   }
 
   /*

@@ -1,13 +1,13 @@
 import { collection, getDocs } from "firebase/firestore";
 import { DateTime } from "../models/DateTime";
-import { firestore } from "../../_js/firebase";
+import { firestore } from "../js/firebase";
 import { Recurrency } from "../models/Recurrency";
 import { OFFSET_STRING } from "./SettingsService";
 
 
 
 
-class RecurrencyDataService {
+export class RecurrencyDataService {
   
   // async getAll(): Promise<Recurrency[]> {
   //   const coll = await getDocs(collection(firestore, "recurrencies"));

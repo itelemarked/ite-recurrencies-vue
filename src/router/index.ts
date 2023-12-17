@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router'
-import HomePage from './Home/HomePage.vue'
-import RecurrencyPage from './Recurrency/views/RecurrencyPage.vue'
+import HomePage from '../views/HomePage.vue'
+import RecurrencyPage from '../views/RecurrencyPage.vue'
+import AuthPage from '../views/AuthPage.vue'
 
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,6 +9,7 @@ export const router = createRouter({
     { path: '/', redirect: '/home' },
     { path: '/home', name: 'home', component: HomePage },
     { path: '/recurrency', name: 'recurrency', component: RecurrencyPage },
+    { path: '/auth', name: 'auth', component: AuthPage },
     { path: '/:pathMatch(.*)*', redirect: '/home' },
   ]
 })

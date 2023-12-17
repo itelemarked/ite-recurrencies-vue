@@ -3,12 +3,9 @@
   <ion-app>
     <ion-split-pane when="md" contentId="main-pages">
 
+      
       <app-menu contentId="main-pages"></app-menu>
       <ion-router-outlet id="main-pages"></ion-router-outlet>
-
-      <!-- <ion-page id="main-pages">
-        <ion-router-outlet></ion-router-outlet>
-      </ion-page> -->
 
     </ion-split-pane>
   </ion-app>
@@ -26,12 +23,10 @@
 
 
 <script setup lang="ts">
-import { IonApp, IonPage, IonRouterOutlet, IonSplitPane } from '@ionic/vue';
-import AppMenu from './AppMenu.vue'
+import { IonApp } from '@ionic/vue';
 import { onMounted } from 'vue';
-import { Recurrency } from './Recurrency/models/Recurrency';
-import { DateTime } from './Recurrency/models/DateTime';
-import { OFFSET_STRING } from './Recurrency/services/SettingsService';
+import { IonSplitPane, IonRouterOutlet} from '@ionic/vue';
+import AppMenu from './AppMenu.vue'
 
 onMounted(() => {
   // const d = DateTime.create({dateString: '2023-12-08', offsetString: '+01:00'}).add(1, 'milliseconds')
@@ -65,6 +60,8 @@ onMounted(() => {
 
   // const r = new Recurrency('aaa', 'aaa', DateTime.create({dateString: '2023-12-08', offsetString: '+01:00'}), {nb: 2, unit: 'days'})
   // console.log(r.getExpiry().getCHDateString(OFFSET_STRING))
+
+  
 })
 
 </script>
