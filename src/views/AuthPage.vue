@@ -11,32 +11,36 @@
       </ion-toolbar>
     </ion-header>
   
-    <ion-content>
+    <ion-content class="ion-padding">
 
-      Auth works!!
-      <p>user: {{ email }}</p>
+      <ion-label>Email</ion-label>
+      <ion-item>
+        <ion-input
+          type="text"
+        ></ion-input>
+        <!-- eslint-disable-next-line vue/no-deprecated-slot-attribute -->
+        <ion-button slot="end" fill="clear">
+          <!-- eslint-disable-next-line vue/no-deprecated-slot-attribute -->
+          <ion-icon :icon="eyeOutline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-item>
 
     </ion-content>
   </ion-page>
 </template>
 
 <style scoped>
-
+  ion-item {
+    border: 1px solid var(--ion-color-medium);
+    border-radius: 5px;
+    --inner-padding-end: 0;
+    margin-top: 10px;
+  }
 </style>
 
 <script setup lang="ts">
-  import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonMenuButton } from '@ionic/vue';
-  import { authService } from '../services/AuthService';
-  import { computed } from 'vue';
-  // const authService = AuthService()
+  import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonMenuButton, IonInput, IonLabel, IonItem, type InputCustomEvent, IonButton, IonIcon } from '@ionic/vue';
+  import { eyeOutline } from 'ionicons/icons';
 
-  // authService.logout()
-  authService.login('aaa@ite-recurrency.com', '111111')
-
-  const email = computed(() => {
-    const res = authService.getUser().value?.email
-    console.log(`computed email: ${res}`)
-    return res
-  })
 
 </script>
