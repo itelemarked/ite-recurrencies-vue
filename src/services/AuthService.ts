@@ -3,8 +3,9 @@
  * TEMP INTERFACES
  */
 
-export interface User {
+export interface IUser {
   email: string
+  uid: string
 }
 
 
@@ -14,33 +15,39 @@ export interface User {
  * THE CLASS WAY
  */
 
-import { ref, type Ref } from "vue";
+import { ref } from "vue";
 import { auth } from "../js/firebase";
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 
 class AuthServiceSingleton {
 
-  user = ref()
+  readonly user = ref<IUser | null>(null)
 
   constructor() {
     onAuthStateChanged(auth, (usr) => {
-      this.user.value = { email: usr?.email }
-      console.log(`onAuthStateChanged: ${usr?.email}`)
+      if (usr === null) {
+        this.user.value = null
+      } else {
+        this.user.value = { email: usr.email!, uid: usr.uid }
+      }
     })
   }
 
-  getUser(): Ref<User | null> {
-    return this.user;
-  }
-
   async login(email: string, password: string): Promise<void> {
-    const credentials = await signInWithEmailAndPassword(auth, email, password)
-    return
+    return signInWithEmailAndPassword(auth, email, password)
+    .then(() => Promise.resolve())
+    .catch((err) => Promise.reject(err))
   }
 
   async logout(): Promise<void> {
     return signOut(auth)
+  }
+
+  async signup(email: string, password: string): Promise<void> {
+    return createUserWithEmailAndPassword(auth, email, password)
+    .then(() => Promise.resolve())
+    .catch((err) => Promise.reject(err))
   }
 
 }
