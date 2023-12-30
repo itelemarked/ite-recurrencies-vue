@@ -28,6 +28,14 @@ import { onMounted } from 'vue';
 import { IonSplitPane, IonRouterOutlet} from '@ionic/vue';
 import AppMenu from './AppMenu.vue'
 
+// signOut(auth)
+
+// onAuthStateChanged(auth, (user) => {
+//   console.log(user)
+// })
+
+// signInWithEmailAndPassword(auth, 'aaa@ite-recurrency.com', '111111')
+
 onMounted(() => {
   // const d = DateTime.create({dateString: '2023-12-08', offsetString: '+01:00'}).add(1, 'milliseconds')
   // const d = DateTime.createByDate(18000000000000)
