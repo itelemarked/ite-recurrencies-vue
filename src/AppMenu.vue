@@ -24,6 +24,11 @@
           <router-link to="/auth">auth</router-link>
         </p>
       </ion-menu-toggle>
+      <ion-menu-toggle>
+        <p>
+          <router-link to="/test">** TEST **</router-link>
+        </p>
+      </ion-menu-toggle>
     </ion-content>
   </ion-menu>
 </template>
