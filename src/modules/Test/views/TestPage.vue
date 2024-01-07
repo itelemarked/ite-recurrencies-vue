@@ -13,7 +13,24 @@
   
     <ion-content class="ion-padding">
 
-      Test page works!
+      <FormControlInput
+        ref="emailCtrl"
+        initialValue="initial value"
+        :errors="[
+          {
+            condition: (val: string) => val === '999',
+            message: 'Value must be different than \'999\''
+          }
+        ]"
+        @valueChange="console.log($event)"
+      ></FormControlInput>
+
+      <p>
+        emailCtrl.valid: {{ emailCtrl?.valid }}
+      </p>
+      <p>
+        emailCtrl.value: {{ emailCtrl?.value }}
+      </p>
 
     </ion-content>
   </ion-page>
@@ -25,5 +42,9 @@
 
 <script setup lang="ts">
   import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonMenuButton, IonInput, IonLabel, IonItem, IonButton, IonIcon, IonNote } from '@ionic/vue';
+  import FormControlInput from '../components/FormControlInput.vue';
+  import { type Ref, onMounted, ref } from 'vue';
+
+  const emailCtrl = ref()
 
 </script>
