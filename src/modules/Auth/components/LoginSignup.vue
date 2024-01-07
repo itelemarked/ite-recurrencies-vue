@@ -3,97 +3,104 @@
 
 <template>
   <div class="login-signup">
-    <div class="email-control ion-padding-top" :class="{ 'control-invalid': !emailCtrl.valid.value, 'control-focused': emailCtrl.focused.value }">
-      <ion-label>Email</ion-label>
-
-      <ion-item>
-        <ion-input
-          type="text"
-          v-model="emailCtrl.val.value"
-          @ionChange="emailCtrl.onChange"
-          @ionBlur="emailCtrl.onBlur"
-          @ionFocus="emailCtrl.onFocus"
-        ></ion-input>
-      </ion-item>
-
-      <ion-note class="ion-padding-top" v-if="emailCtrl.errors.value.length !== 0" color="danger">
-        <div v-for="error in emailCtrl.errors.value">{{ error }}</div>
-      </ion-note>
-    </div>
-
-    <div
-      class="password-control ion-padding-top"
-      :class="{
-        'control-invalid': !passwordCtrl.valid.value,
-        'control-focused': passwordCtrl.focused.value
-      }"
-    >
-      <ion-label>Password</ion-label>
-
-      <ion-item>
-        <ion-input
-          :type="passwordCtrl.show.value ? 'text' : 'password'"
-          v-model="passwordCtrl.val.value"
-          @ion-change="passwordCtrl.onChange"
-          @ion-blur="passwordCtrl.onBlur"
-          @ion-focus="passwordCtrl.onFocus"
-        ></ion-input>
-
-        <ion-button
-          slot="end"
-          fill="clear"
-          @click="passwordCtrl.show.value = !passwordCtrl.show.value"
-        >
-          <ion-icon
-            :icon="passwordCtrl.show.value ? eyeOffOutline : eyeOutline"
-            color="dark"
-            slot="icon-only"
-          ></ion-icon>
-        </ion-button>
-      </ion-item>
-
-      <ion-note
-        class="ion-padding-top"
-        v-if="passwordCtrl.errors.value.length !== 0"
-        color="danger"
+    <form>
+      <div
+        class="email-control ion-padding-top"
+        :class="{
+          'control-invalid': !emailCtrl.valid.value,
+          'control-focused': emailCtrl.focused.value
+        }"
       >
-        <div v-for="error in passwordCtrl.errors.value">{{ error }}</div>
-      </ion-note>
-    </div>
+        <ion-label>Email</ion-label>
 
-    <div class="ion-padding-top">
-      <ion-button
-        :disabled="(!emailCtrl.valid.value || !passwordCtrl.valid.value) || (!emailCtrl.touched.value || !passwordCtrl.touched.value)" 
-        v-if="loginOrSignup === 'login'"
-        expand="block"
-        shape="round"
-        @click="onLogin"
-        >Login</ion-button
-      >
-      <ion-button v-if="loginOrSignup === 'signup'" expand="block" shape="round" @click="onSignup"
-        >Signup</ion-button
-      >
-    </div>
+        <ion-item>
+          <ion-input
+            type="text"
+            v-model="emailCtrl.val.value"
+            @ionChange="emailCtrl.onChange"
+            @ionBlur="emailCtrl.onBlur"
+            @ionFocus="emailCtrl.onFocus"
+          ></ion-input>
+        </ion-item>
 
-    <div class="error-wrapper" v-if="errors.length !== 0">
-      <div v-for="error of errors">
-        {{ error }}
+        <ion-note class="ion-padding-top" v-if="emailCtrl.errors.value.length !== 0" color="danger">
+          <div v-for="error in emailCtrl.errors.value">{{ error }}</div>
+        </ion-note>
       </div>
-    </div>
 
-    <div style="border-top: 1px solid lightgrey; margin-top: 30px; text-align: center">
-      <p v-if="loginOrSignup === 'login'">
-        No account yet?
-        <ion-text color="primary" @click="loginOrSignup = 'signup'"><u>Signup</u></ion-text>
-      </p>
-      <p v-if="loginOrSignup === 'signup'">
-        Already have an account?
-        <ion-text color="primary" @click="loginOrSignup = 'login'"><u>Login</u></ion-text>
-      </p>
-    </div>
+      <div
+        class="password-control ion-padding-top"
+        :class="{
+          'control-invalid': !passwordCtrl.valid.value,
+          'control-focused': passwordCtrl.focused.value
+        }"
+      >
+        <ion-label>Password</ion-label>
 
-    <!-- TEMP -->
-    <!-- <p>user: {{ userEmail }}</p> -->
+        <ion-item>
+          <ion-input
+            :type="passwordCtrl.show.value ? 'text' : 'password'"
+            v-model="passwordCtrl.val.value"
+            @ionChange="passwordCtrl.onChange"
+            @ionBlur="passwordCtrl.onBlur"
+            @ionFocus="passwordCtrl.onFocus"
+          ></ion-input>
+
+          <ion-button
+            slot="end"
+            fill="clear"
+            @click="passwordCtrl.show.value = !passwordCtrl.show.value"
+          >
+            <ion-icon
+              :icon="passwordCtrl.show.value ? eyeOffOutline : eyeOutline"
+              color="dark"
+              slot="icon-only"
+            ></ion-icon>
+          </ion-button>
+        </ion-item>
+
+        <ion-note
+          class="ion-padding-top"
+          v-if="passwordCtrl.errors.value.length !== 0"
+          color="danger"
+        >
+          <div v-for="error in passwordCtrl.errors.value">{{ error }}</div>
+        </ion-note>
+      </div>
+
+      <div class="ion-padding-top">
+        <ion-button
+          :disabled="
+            !emailCtrl.valid.value || !passwordCtrl.valid.value || !passwordCtrl.touched.value
+          "
+          v-if="loginOrSignup === 'login'"
+          expand="block"
+          shape="round"
+          @click="onLogin"
+          >Login</ion-button
+        >
+        <ion-button v-if="loginOrSignup === 'signup'" expand="block" shape="round" @click="onSignup"
+          >Signup</ion-button
+        >
+      </div>
+
+      <div class="error-wrapper" v-if="errors.length !== 0">
+        <div v-for="error of errors">
+          {{ error }}
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid lightgrey; margin-top: 30px; text-align: center">
+        <p v-if="loginOrSignup === 'login'">
+          No account yet?
+          <ion-text color="primary" @click="loginOrSignup = 'signup'"><u>Signup</u></ion-text>
+        </p>
+        <p v-if="loginOrSignup === 'signup'">
+          Already have an account?
+          <ion-text color="primary" @click="loginOrSignup = 'login'"><u>Login</u></ion-text>
+        </p>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -135,7 +142,7 @@
 <script setup lang="ts">
   import { IonInput, IonLabel, IonItem, IonButton, IonIcon, IonNote, IonText } from '@ionic/vue'
   import { eyeOutline, eyeOffOutline } from 'ionicons/icons'
-  import { ref } from 'vue'
+  import { computed, ref, type Ref } from 'vue'
   import { authService } from '../services/AuthService'
 
   const loginOrSignup = ref<'login' | 'signup'>('login')
@@ -241,7 +248,6 @@
     }
 
     function onFocus(e: CustomEvent) {
-      console.log('focused!')
       focused.value = true
     }
 
@@ -287,16 +293,18 @@
   })()
 
   function onLogin() {
-    authService.login(emailCtrl.val.value, passwordCtrl.val.value)
-    .then(() => {
-      // TODO: add a usr argument to the resolve promise
-      console.log(authService.user)
-    })
-    .catch((err) => {
-      errors.value.push(err.code)
-    })
+    authService
+      .login(emailCtrl.val.value, passwordCtrl.val.value)
+      .then(() => {
+        // TODO: add a usr argument to the resolve promise
+        console.log(authService.user)
+      })
+      .catch((err) => {
+        errors.value.push(err.code)
+      })
   }
 
+  // TODO
   function onSignup() {}
 
 </script>
