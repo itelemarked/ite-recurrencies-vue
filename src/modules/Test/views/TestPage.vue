@@ -13,24 +13,45 @@
   
     <ion-content class="ion-padding">
 
-      <FormControlInput
-        ref="emailCtrl"
-        initialValue="initial value"
-        :errors="[
-          {
-            condition: (val: string) => val === '999',
-            message: 'Value must be different than \'999\''
-          }
-        ]"
-        @valueChange="console.log($event)"
-      ></FormControlInput>
+      <div class="ion-padding-top">
+        <InputControl
+          ref="emailCtrl"
+          type="text"
+          label="Email"
+          initialValue="Some initial value"
+          :validators="[VALIDATORS.email]"
+        ></InputControl>
+      </div>
+      
+      <div class="ion-padding-top">
+        <InputControl
+          ref="passwordCtrl"
+          type="password"
+          label="Password"
+          :validators="[VALIDATORS.minLength(6), VALIDATORS.hasCapitalCharacter, VALIDATORS.hasDigit, VALIDATORS.hasSpecialCharacter]"
+        ></InputControl>
+      </div>
 
-      <p>
-        emailCtrl.valid: {{ emailCtrl?.valid }}
-      </p>
-      <p>
-        emailCtrl.value: {{ emailCtrl?.value }}
-      </p>
+      <p>emailCtrl.value: {{ emailCtrl?.value }}</p>
+      <p>emailCtrl.dirty: {{ emailCtrl?.dirty }}</p>
+      <p>emailCtrl.touched: {{ emailCtrl?.touched }}</p>
+      <p>emailCtrl.focused: {{ emailCtrl?.focused }}</p>
+      <p>emailCtrl.valid: {{ emailCtrl?.valid }}</p>
+
+      <div class="ion-padding-top">
+        <ion-button>
+          Button
+        </ion-button>
+        <!-- <ion-button
+          :disabled="!emailCtrl?.valid || !passwordCtrl?.valid"
+          v-if="loginOrSignup === 'login'"
+          expand="block"
+          shape="round"
+          @click="onLogin"
+          >
+          Login
+        </ion-button> -->
+      </div>
 
     </ion-content>
   </ion-page>
@@ -41,10 +62,11 @@
 </style>
 
 <script setup lang="ts">
-  import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonMenuButton, IonInput, IonLabel, IonItem, IonButton, IonIcon, IonNote } from '@ionic/vue';
-  import FormControlInput from '../components/FormControlInput.vue';
-  import { type Ref, onMounted, ref } from 'vue';
+  import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonMenuButton, IonButton } from '@ionic/vue';
+  import { ref } from 'vue';
+  import { InputControl, VALIDATORS, type Exposed } from '../components/InputControl'
 
-  const emailCtrl = ref()
+  const emailCtrl = ref<Exposed>()
+  const passwordCtrl = ref<Exposed>()
 
 </script>

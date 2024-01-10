@@ -142,7 +142,7 @@
 <script setup lang="ts">
   import { IonInput, IonLabel, IonItem, IonButton, IonIcon, IonNote, IonText } from '@ionic/vue'
   import { eyeOutline, eyeOffOutline } from 'ionicons/icons'
-  import { computed, ref, type Ref } from 'vue'
+  import { ref } from 'vue'
   import { authService } from '../services/AuthService'
 
   const loginOrSignup = ref<'login' | 'signup'>('login')
@@ -186,7 +186,7 @@
       focused.value = false
     }
 
-    function onFocus(e: CustomEvent) {
+    function onFocus() {
       focused.value = true
     }
 
@@ -247,7 +247,7 @@
       focused.value = false
     }
 
-    function onFocus(e: CustomEvent) {
+    function onFocus() {
       focused.value = true
     }
 
