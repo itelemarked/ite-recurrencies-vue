@@ -13,11 +13,13 @@
   
     <ion-content class="ion-padding">
 
-      <p>PARENT COMPONENT</p>
-      <p>firstname: {{ user.firstname }}</p>
-      <p>lastname: {{ user.lastname }}</p>
+      <InputControl2
+        v-model="f"
+      />
 
-      <InputControl2 v-model="user"></InputControl2>
+      <p>
+        f.value {{ f.value }}
+      </p>
 
       <!-- <div class="ion-padding-top">
         <InputControl
@@ -69,19 +71,21 @@
 
 <script setup lang="ts">
   import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonMenuButton, IonButton } from '@ionic/vue';
-  import { nextTick, onMounted, onUpdated, ref } from 'vue';
+  import { nextTick, onMounted, onUpdated, reactive, ref, type Ref } from 'vue';
   import { InputControl, VALIDATORS, type Exposed } from '../components/InputControl'
   import InputControl2 from '../components/InputControl2/InputControl2.vue'
-  import { type User } from '../components/InputControl2/models';
+  import { FormControl } from '../components/InputControl2/models';
 
   const emailCtrl = ref<Exposed>()
   const passwordCtrl = ref<Exposed>()
 
-  const user = ref<User>({firstname: 'bob', lastname: 'dylan'})
-  const name = ref('abcd')
+  const f = ref(new FormControl({
+    value: 'abcd'
+  }))
 
-  setTimeout(() => {
-    user.value = {firstname: 'Jane', lastname: 'birkin'}
-  }, 3000);
+  // const f = new FormControl({
+  //   value: 'abcd'
+  // })
+  
 
 </script>
