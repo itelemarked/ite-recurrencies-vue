@@ -13,53 +13,11 @@
   
     <ion-content class="ion-padding">
 
-      <InputControl2
-        v-model="f"
-      />
+      <InputControl2 v-model="f"/>
 
       <p>
         f.value {{ f.value }}
       </p>
-
-      <!-- <div class="ion-padding-top">
-        <InputControl
-          ref="emailCtrl"
-          type="text"
-          label="Email"
-          initialValue="Some initial value"
-          :validators="[VALIDATORS.email]"
-        ></InputControl>
-      </div>
-      
-      <div class="ion-padding-top">
-        <InputControl
-          ref="passwordCtrl"
-          type="password"
-          label="Password"
-          :validators="[VALIDATORS.minLength(6), VALIDATORS.hasCapitalCharacter, VALIDATORS.hasDigit, VALIDATORS.hasSpecialCharacter]"
-        ></InputControl>
-      </div>
-
-      <p>emailCtrl.value: {{ emailCtrl?.value }}</p>
-      <p>emailCtrl.dirty: {{ emailCtrl?.dirty }}</p>
-      <p>emailCtrl.touched: {{ emailCtrl?.touched }}</p>
-      <p>emailCtrl.focused: {{ emailCtrl?.focused }}</p>
-      <p>emailCtrl.valid: {{ emailCtrl?.valid }}</p>
-
-      <div class="ion-padding-top">
-        <ion-button>
-          Button
-        </ion-button>
-        <ion-button
-          :disabled="!emailCtrl?.valid || !passwordCtrl?.valid"
-          v-if="loginOrSignup === 'login'"
-          expand="block"
-          shape="round"
-          @click="onLogin"
-          >
-          Login
-        </ion-button>
-      </div> -->
 
     </ion-content>
   </ion-page>
@@ -80,7 +38,8 @@
   const passwordCtrl = ref<Exposed>()
 
   const f = ref(new FormControl({
-    value: 'abcd'
+    value: 'abcd',
+    label: 'some label'
   }))
 
   // const f = new FormControl({
