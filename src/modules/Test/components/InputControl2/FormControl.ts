@@ -35,7 +35,7 @@ abstract class AbstractFormControl {
 export class FormControl extends AbstractFormControl {
 
   /* PUBLIC */
-  
+
   get label() { return this._label }
   get type() { return this._type }
   get validators() { return [...this._validators] }
@@ -97,5 +97,6 @@ export class FormControlExtended extends FormControl {
   constructor({label = '', type = 'text', value = '', validators = []}: Constructor) {
     super({ label, type, value, validators })
   }
+  
 
 }
