@@ -3,4 +3,4 @@
 // import InputControl from './InputControl.vue'
 
 export * from './models'
-export { default as InputControl } from './InputControl.vue'
+export { default as InputControl } from './InputControl2.vue'

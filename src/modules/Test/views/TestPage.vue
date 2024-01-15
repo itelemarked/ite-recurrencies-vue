@@ -13,11 +13,20 @@
   
     <ion-content class="ion-padding">
 
-      <InputControl2 v-model="f"/>
+      <InputControl v-model="ctrl"/>
 
       <p>
-        f.value {{ f.value }}
+        value: {{ ctrl.value }} <br/>
+        label: {{ ctrl.label }} <br/>
+        type: {{ ctrl.type }}<br/>
+        validators: {{ ctrl.validators }}<br/>
+        focused: {{ ctrl.focused }}<br/>
+        touched: {{ ctrl.touched }}<br/>
+        dirty: {{ ctrl.dirty }}<br/>
+        showPassword: {{ ctrl.showPassword }}<br/>
+        errorMessages: {{ ctrl.errors() }}
       </p>
+
 
     </ion-content>
   </ion-page>
@@ -29,22 +38,20 @@
 
 <script setup lang="ts">
   import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonMenuButton, IonButton } from '@ionic/vue';
-  import { nextTick, onMounted, onUpdated, reactive, ref, type Ref } from 'vue';
-  import { InputControl, VALIDATORS, type Exposed } from '../components/InputControl'
-  import InputControl2 from '../components/InputControl2/InputControl2.vue'
-  import { FormControl } from '../components/InputControl2/models';
+  import { ref, type Ref } from 'vue';
 
-  const emailCtrl = ref<Exposed>()
-  const passwordCtrl = ref<Exposed>()
-
-  const f = ref(new FormControl({
-    value: 'abcd',
-    label: 'some label'
-  }))
-
-  // const f = new FormControl({
-  //   value: 'abcd'
-  // })
+  import InputControl from '../components/InputControl/InputControl.vue';
+  import { InputControl as InputControlModel } from '../components/InputControl/InputControl.model'
   
+  const validator_required = {
+    validWhen: (val: string) => val.trim() !== '',
+    invalidMessage: 'Cannot be void...'
+  }
+
+  const ctrl = ref(new InputControlModel({
+    label: 'some label',
+    validators: [validator_required],
+    value: 'aaa'
+  })) as Ref<InputControlModel>
 
 </script>

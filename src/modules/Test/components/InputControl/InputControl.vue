@@ -41,124 +41,53 @@
 
 
 <template>
-  <div 
-    class="ite-input-control"  
-    :class="{
-      'input-control-focused': focused,
-      'input-control-invalid': !valid
-    }"
-  >
-    <ion-label>
-      {{ label }}
-      <!-- <p>valid: {{ valid }}</p> -->
-    </ion-label>
-
-    <ion-item class="ion-item">
-      <ion-input
-        :type="typeMode"
-        :value="val"
-        @ionChange="onChange"
-        @ionFocus="onFocus"
-        @ionBlur="onBlur"
-      ></ion-input>
-
-      <ion-button v-if="type === 'password'" slot="end" fill="clear" @click.stop.prevent="showPassword = !showPassword"> <!-- eslint-disable-line vue/no-deprecated-slot-attribute -->
-        <ion-icon :icon="showPassword ? eyeOffOutline : eyeOutline" color="dark" slot="icon-only"></ion-icon> <!-- eslint-disable-line vue/no-deprecated-slot-attribute -->
-      </ion-button>
-    </ion-item>
-
-    <ion-note class="ion-padding-top" v-if="!valid" color="danger">
-      <!-- eslint-disable-next-line vue/require-v-for-key -->
-      <div v-for="error in errors">{{ error }}</div>
-    </ion-note>
+  <div>
+    <IonLabel>{{ modelValue.label }}</IonLabel>
+    <IonInput
+      type="text"
+      :value="modelValue.value"
+      @ionChange="onChange"
+      @ionFocus="onFocus"
+      @ionBlur="onBlur"
+    />
   </div>
 </template>
 
 
 <script setup lang="ts">
-  import { IonLabel, IonItem, IonInput, IonNote, IonButton, IonIcon } from '@ionic/vue';
-  import { eyeOffOutline, eyeOutline } from 'ionicons/icons'
-  import { computed, ref } from 'vue';
-  import type { Props, Validator } from '.';
-  
+  import { IonInput, IonLabel } from '@ionic/vue';
+  import type { InputControl } from './InputControl.model';
 
-  const props = withDefaults(defineProps<Props>(), {
-    initialValue: '',
-    type: 'text',
-    validators: () => []
-  })
+  const props = defineProps<{
+    // FormControl type not working... WTF!!
+    modelValue: InputControl
+  }>()
 
-  // const props = defineProps(['initialValue', 'validators', 'type', 'label'])
-
-  const val = ref(props.initialValue) /* current value of the control */
-  const dirty = ref(false) /* value has been modified at least once */
-  const touched = ref(false) /* control has been blurred at least once */
-  const focused = ref(false) /* control has currently focus */
-  const showPassword = ref(false) /* in mode 'password', the text will be hidden by default */
-  
-  const errors = computed(() => updatedErrors(val.value, props.validators, dirty.value, touched.value))
-  const valid = computed(() => updatedValid(val.value, props.validators, dirty.value, touched.value), {
-    onTrigger: (e: any) => {
-      console.log(e)
-    }
-  })
-  // const errors = computed(() => [])
-  // const valid = computed(() => props.validators === null, {
-  //   onTrigger(e) {
-  //     console.log(e)
-  //   }
-  // })
-
-  const typeMode = computed(() => updatedTypeMode(props.type, showPassword.value))
-
-  function updatedErrors(val: string, validators: Validator[], dirty: boolean, touched: boolean): string[] {
-    const messages = validators
-      .filter((validator) => !validator.condition(val))
-      .map(validator => validator.message)
-    return dirty && touched ? messages : []
-  }
-
-  function updatedValid(val: string, validators: Validator[], dirty: boolean, touched: boolean): boolean  {
-    const hasError = updatedErrors(val, validators, dirty, touched).length !== 0
-    return !(dirty && touched && hasError)
-  }
-  // function updatedValid(val: string, validators: Validator[], dirty: boolean, touched: boolean): boolean  {
-    
-  //   return true
-  // }
-  
-
-  function updatedTypeMode(type: 'text' | 'password', showPassword: boolean): 'text' | 'password' {
-    return type === 'password' && !showPassword ? 'password' : 'text'
-  }
+  const emit = defineEmits<{
+    'update:modelValue': [formControl: InputControl]
+  }>()
 
   function onChange(e: CustomEvent) {
-    val.value = (e.target as HTMLInputElement).value.trim()
-    dirty.value = true
+    const newValue = (e.target as HTMLInputElement).value
+    // const newFormControl = props.modelValue
+    //   .setValue(newValue)
+    //   .setDirty(true)
+    const newFormControl = props.modelValue.update({ value: newValue, dirty: true })
+    emit('update:modelValue', newFormControl)
   }
 
   function onFocus() {
-    focused.value = true
+    const newFormControl = props.modelValue
+      .setFocused(true)
+    emit('update:modelValue', newFormControl)
   }
 
   function onBlur() {
-    focused.value = false
-    dirty.value = true
-    touched.value = true
+    const newFormControl = props.modelValue
+      .setTouched(true)
+      .setFocused(false)
+    emit('update:modelValue', newFormControl)
   }
-
-  function setVal(newVal: string) {
-    val.value = newVal;
-  }
-
-  defineExpose({
-    setValue: setVal,
-    value: computed(() => val.value),
-    dirty: computed(() => dirty.value),
-    touched: computed(() => touched.value),
-    focused: computed(() => focused.value),
-    valid: valid,
-  })
 </script>
 
 
