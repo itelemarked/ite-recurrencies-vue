@@ -1,4 +1,48 @@
 
+<!-- ************************************************************
+
+    <template>
+      <InputControl
+        ref="emailCtrlRef"                    /** optional                    */
+        type="text"                           /** optional, defaults to 'text' */
+        placeholder="Enter a email..."        /** optional, defaults to ''     */
+        label="Email"                         /** optional, defaults to ''     */
+        :validators="emailCtrl.validators"    /** optional, defaults to []. The preset VALIDATORS might also be used [e.g VALIDATORS.MIN_LENGTH(6)] */
+        v-model="emailCtrl.value"             /** optional                     */
+      />
+
+      <p>
+        emailCtrl.value: {{ emailCtrl.value }} <br/>
+
+        emailCtrlRef.value: {{ emailCtrlRef?.value }} <br/>
+        emailCtrlRef.dirty: {{ emailCtrlRef?.dirty }} <br/>
+        emailCtrlRef.touched: {{ emailCtrlRef?.touched }} <br/>
+        emailCtrlRef.valid: {{ emailCtrlRef?.valid }} <br/>
+        emailCtrlRef.errors: {{ emailCtrlRef?.errors }} <br/>
+      </p> 
+    </template>
+
+    <script>
+      import InputControl, { type Validator, type Exposed } from '../components/InputControl3/InputControl.vue';
+
+      const emailCtrlRef = ref<Exposed>()
+
+      const emailCtrl = ref<{
+        value: string,
+        validators: Validator[]
+      }>({
+        value: 'abcd',
+        validators: [
+          {
+            validWhen: (val: string) => val.trim() !== '',
+            invalidMessage: 'Cannot be void...'
+          }
+        ]
+      })
+    </script>
+
+************************************************************ -->
+
 
 <style>
   .ite-input-control {
@@ -42,11 +86,11 @@
 
 
 <template>
-  <div
-    class="ite-input-control"
+  <div 
+    class="ite-input-control"  
     :class="{
       'input-control-focused': focused,
-      'input-control-invalid': !valid && dirty && touched
+      'input-control-invalid': !valid && touched && dirty
     }"
   >
     <ion-label>
@@ -57,6 +101,7 @@
       <ion-input
         :type="typeMode"
         :value="modelValue"
+        :placeholder="placeholder"
         @ionChange="onChange"
         @ionFocus="onFocus"
         @ionBlur="onBlur"
@@ -68,7 +113,8 @@
     </ion-item>
 
     <ion-note class="ion-padding-top" v-if="!valid" color="danger">
-      <div v-for="error in errors">{{ error }}</div> <!-- eslint-disable-line vue/require-v-for-key -->
+      <!-- eslint-disable-next-line vue/require-v-for-key -->
+      <div v-for="error in errors">{{ error }}</div>
     </ion-note>
   </div>
 </template>
@@ -103,18 +149,16 @@
   const showPassword = ref(false) /* in mode 'password', the text will be hidden by default */
   const errors = ref(updatedErrors(props.modelValue, props.validators, dirty.value, touched.value))
   const valid = ref(updatedValid(props.modelValue, props.validators))
-  const typeMode = computed(() => updatedTypeMode(props.type, showPassword.value))
-
+  
   /** computed */
-  // const errors = computed(() => updatedErrors(props.modelValue, props.validators, dirty.value, touched.value))
-  // const valid = computed(() => updatedValid(props.modelValue, props.validators))
-  // const typeMode = computed(() => updatedTypeMode(props.type, showPassword.value))
+  const typeMode = computed(() => updatedTypeMode(props.type, showPassword.value))
 
   /** actions */
   function onChange(e: CustomEvent) {
     const newValue = (e.target as HTMLInputElement).value.trim()
-    dirty.value = true
-    errors.value = updatedErrors(newValue, props.validators, dirty.value, touched.value)
+    const newDirty = true
+    dirty.value = newDirty
+    errors.value = updatedErrors(newValue, props.validators, newDirty, touched.value)
     valid.value = updatedValid(newValue, props.validators)
     emits('update:modelValue', newValue)
   }
@@ -124,24 +168,23 @@
   }
 
   function onBlur() {
-    touched.value = false
+    const newDirty = true
+    const newTouched = true
     focused.value = false
-    dirty.value = true
-    touched.value = true
-    errors.value = updatedErrors(props.modelValue, props.validators, true, true)
+    dirty.value = newDirty
+    touched.value = newTouched
+    errors.value = updatedErrors(props.modelValue, props.validators, newDirty, newTouched)
   }
 
   /** utils */
-  function updatedErrors(val: string, validators: Validator[] | undefined, dirty: boolean, touched: boolean): string[] {
-    if (validators === undefined) return []
+  function updatedErrors(val: string, validators: Validator[], dirty: boolean, touched: boolean): string[] {
     const messages = validators
       .filter((validator) => !validator.validWhen(val))
       .map(validator => validator.invalidMessage)
     return dirty && touched ? messages : []
   }
 
-  function updatedValid(val: string, validators: Validator[] | undefined): boolean {
-    if (validators === undefined) return true
+  function updatedValid(val: string, validators: Validator[]): boolean {
     return validators.filter((validator) => !validator.validWhen(val)).length === 0
   }
 
@@ -154,8 +197,8 @@
     value: computed(() => props.modelValue),
     dirty: computed(() => dirty.value),
     touched: computed(() => touched.value),
-    valid: computed(() => valid.value),
-    errors: computed(() => errors.value),
+    valid,
+    errors
   })
 </script>
 

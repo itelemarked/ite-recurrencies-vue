@@ -13,7 +13,7 @@
   
     <ion-content class="ion-padding">
 
-      <InputControl v-model="ctrl"/>
+      <!-- <InputControl v-model="ctrl"/>
 
       <p>
         value: {{ ctrl.value }} <br/>
@@ -25,8 +25,26 @@
         dirty: {{ ctrl.dirty }}<br/>
         showPassword: {{ ctrl.showPassword }}<br/>
         errorMessages: {{ ctrl.errors() }}
-      </p>
+      </p> -->
 
+      <InputControl
+        ref="emailCtrlRef"
+        type="password"
+        label="Email"
+        placeholder="Enter an email..."
+        v-model="emailCtrl.value"
+      />
+
+      <p>
+        emailCtrl.value: {{ emailCtrl.value }} <br/>
+        emailCtrlRef.value: {{ emailCtrlRef?.value }} <br/>
+        emailCtrlRef.dirty: {{ emailCtrlRef?.dirty }} <br/>
+        emailCtrlRef.touched: {{ emailCtrlRef?.touched }} <br/>
+        emailCtrlRef.valid: {{ emailCtrlRef?.valid }} <br/>
+        emailCtrlRef.errors: {{ emailCtrlRef?.errors }} <br/>
+      </p> 
+
+      <IonButton :disabled="!emailCtrlRef?.touched || !emailCtrlRef?.dirty || !emailCtrlRef?.valid">Btn</IonButton>
 
     </ion-content>
   </ion-page>
@@ -38,20 +56,22 @@
 
 <script setup lang="ts">
   import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonMenuButton, IonButton } from '@ionic/vue';
-  import { ref, type Ref } from 'vue';
+  import { ref } from 'vue';
 
-  import InputControl from '../components/InputControl/InputControl.vue';
-  import { InputControl as InputControlModel } from '../components/InputControl/InputControl.model'
-  
-  const validator_required = {
-    validWhen: (val: string) => val.trim() !== '',
-    invalidMessage: 'Cannot be void...'
-  }
+  import InputControl, { type Validator, type Exposed, VALIDATORS } from '../components/InputControl/InputControl.vue';
 
-  const ctrl = ref(new InputControlModel({
-    label: 'some label',
-    validators: [validator_required],
-    value: 'aaa'
-  })) as Ref<InputControlModel>
+  const emailCtrlRef = ref<Exposed>()
+  const emailCtrl = ref<{
+    value: string,
+    validators: Validator[]
+  }>({
+    value: 'abcd',
+    validators: [
+      {
+        validWhen: (val: string) => val.trim() !== '',
+        invalidMessage: 'Cannot be void...'
+      }
+    ]
+  })
 
 </script>
