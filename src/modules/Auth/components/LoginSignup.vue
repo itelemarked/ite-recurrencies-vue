@@ -51,6 +51,7 @@
           ref="emailCtrl"
           type="text"
           label="Email"
+          placeholder="Enter an email"
           :validators="[VALIDATORS.EMAIL]"
           v-model="emailCtrlValue"
         />
@@ -61,6 +62,7 @@
           ref="passwordCtrl"
           type="password"
           label="Password"
+          placeholder="Enter a password"
           :validators="[VALIDATORS.MIN_LENGTH(6), VALIDATORS.HAS_CAPITAL_CHAR, VALIDATORS.HAS_DIGIT, VALIDATORS.HAS_SPECIAL_CHAR]"
           v-model="passwordCtrlValue"
         />
