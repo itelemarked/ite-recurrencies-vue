@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router'
 
-import HomePage from '@/views/HomePage.vue'
+import HomePage from '@/modules/Home/views/HomePage.vue'
 import RecurrencyPage from '@/views/RecurrencyPage.vue'
 import AuthPage from '@/modules/Auth/views/AuthPage.vue'
 import TestPage from '@/modules/Test/views/TestPage.vue'
