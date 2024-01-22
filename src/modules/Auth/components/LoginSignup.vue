@@ -63,7 +63,7 @@
           type="password"
           label="Password"
           placeholder="Enter a password"
-          :validators="[VALIDATORS.MIN_LENGTH(6), VALIDATORS.HAS_CAPITAL_CHAR, VALIDATORS.HAS_DIGIT, VALIDATORS.HAS_SPECIAL_CHAR]"
+          :validators="[VALIDATORS.MIN_LENGTH(6)]"
           v-model="passwordCtrlValue"
         />
       </div>
@@ -73,6 +73,7 @@
           :disabled="!emailCtrl?.valid || !passwordCtrl?.valid"
           expand="block"
           shape="round"
+          :color="loginOrSignup === 'login' ? 'primary' : 'warning'"
           @click="onLoginOrSignup"
         >
           {{ loginOrSignup === 'login' ? 'Login' : 'Signup' }}
@@ -89,7 +90,7 @@
       <div class="login-signup-text-wrapper">
         <p v-if="loginOrSignup === 'login'">
           No account yet?
-          <ion-text color="primary" @click="loginOrSignup = 'signup'"><u>Signup</u></ion-text>
+          <ion-text color="warning" @click="loginOrSignup = 'signup'"><u>Signup</u></ion-text>
         </p>
         <p v-if="loginOrSignup === 'signup'">
           Already have an account?
@@ -102,13 +103,15 @@
 
 <script setup lang="ts">
   import { IonButton,IonText } from '@ionic/vue'
-  import { computed, ref } from 'vue'
-  import { authService } from '../services/AuthService'
+  import { ref } from 'vue'
   import InputControl, { VALIDATORS, type Exposed } from '@/modules/Auth/components/InputControl.vue'
+  import { useAuth } from '../use/useAuth';
+
 
   /** state */
   const loginOrSignup = ref<'login' | 'signup'>('login')
   const errors = ref<string[]>([])
+  const { user, login, signup } = useAuth()
 
   /** email control */
   const emailCtrl = ref<Exposed>()
@@ -119,21 +122,39 @@
   const passwordCtrlValue = ref<string>('')
 
 
-  function onLoginOrSignup() {}
+  function onLoginOrSignup() {
+    if (loginOrSignup.value === 'login') {
+      onLogin()
+    } else {
+      onSignup()
+    }
+  }
 
   function onLogin() {
-    authService
-      .login(emailCtrlValue.value, passwordCtrlValue.value)
+    errors.value = []
+    login(emailCtrlValue.value, passwordCtrlValue.value)
       .then(() => {
         // TODO: add a usr argument to the resolve promise
-        console.log(authService.user)
+        console.log(user)
       })
       .catch((err) => {
+        // TODO: better error message
         errors.value.push(err.code)
       })
   }
 
   // TODO
-  function onSignup() {}
+  function onSignup() {
+    errors.value = []
+    signup(emailCtrlValue.value, passwordCtrlValue.value)
+      .then(() => {
+        // TODO: add a usr argument to the resolve promise
+        console.log(user)
+      })
+      .catch((err) => {
+        // TODO: better error message
+        errors.value.push(err.code)
+      })
+  }
 
 </script>

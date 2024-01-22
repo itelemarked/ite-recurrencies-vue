@@ -20,6 +20,9 @@
 
       <p>Testing page works</p>
 
+      <p>{{ counter }}</p>
+      <button @click="increase">increase</button>
+
     </ion-content>
   </ion-page>
 </template>
@@ -27,4 +30,8 @@
 
 <script setup lang="ts">
   import { IonPage, IonHeader, IonTitle, IonButtons, IonToolbar, IonMenuButton, IonContent } from '@ionic/vue'
+  import { useCounter } from '@/useCounter2' 
+
+  const { counter, increase } = useCounter()
+  
 </script>

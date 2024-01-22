@@ -9,11 +9,11 @@ export interface IUser {
 }
 
 
-const _user = ref<IUser | null>(null)
+const _user = ref<IUser | null | undefined>()
 
-function useAuth() {
+export function useAuth() {
 
-  const user = computed(() => _user)
+  const user = computed(() => _user.value)
 
   onAuthStateChanged(auth, (usr) => {
     if (usr === null) {
@@ -22,10 +22,6 @@ function useAuth() {
       _user.value = { email: usr.email!, uid: usr.uid }
     }
   })
-
-  // function user(): ref<IUser | null>(null) {
-  //   return user;
-  // }
 
   async function login(email: string, password: string): Promise<void> {
     return signInWithEmailAndPassword(auth, email, password)
@@ -41,6 +37,13 @@ function useAuth() {
     return createUserWithEmailAndPassword(auth, email, password)
     .then(() => Promise.resolve())
     .catch((err) => Promise.reject(err))
+  }
+
+  return {
+    user,
+    login,
+    logout,
+    signup
   }
 
 }
