@@ -133,9 +133,9 @@
   function onLogin() {
     errors.value = []
     login(emailCtrlValue.value, passwordCtrlValue.value)
-      .then(() => {
-        // TODO: add a usr argument to the resolve promise
-        console.log(user)
+      .then((usr) => {
+        // TO DELETE, TESTING ONLY
+        console.log(usr)
       })
       .catch((err) => {
         // TODO: better error message
@@ -147,9 +147,9 @@
   function onSignup() {
     errors.value = []
     signup(emailCtrlValue.value, passwordCtrlValue.value)
-      .then(() => {
-        // TODO: add a usr argument to the resolve promise
-        console.log(user)
+      .then((usr) => {
+        // TO DELETE, TESTING ONLY
+        console.log(usr)
       })
       .catch((err) => {
         // TODO: better error message

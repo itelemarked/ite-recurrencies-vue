@@ -8,11 +8,15 @@ export interface IUser {
   uid: string
 }
 
-
+/* 
+* User is undefined if it hasn't been fetched, null if logged out, a IUser instance otherwise.
+* Globally defined in order to be a singleton
+*/
 const _user = ref<IUser | null | undefined>()
 
 export function useAuth() {
 
+  /* a read only user */
   const user = computed(() => _user.value)
 
   onAuthStateChanged(auth, (usr) => {
@@ -23,9 +27,13 @@ export function useAuth() {
     }
   })
 
-  async function login(email: string, password: string): Promise<void> {
+  async function login(email: string, password: string): Promise<IUser> {
     return signInWithEmailAndPassword(auth, email, password)
-    .then(() => Promise.resolve())
+    // .then(() => Promise.resolve())
+    .then((credentials) => {
+      const { uid } = credentials.user
+      return Promise.resolve({email, uid})
+    })
     .catch((err) => Promise.reject(err))
   }
 
@@ -33,9 +41,12 @@ export function useAuth() {
     return signOut(auth)
   }
 
-  async function signup(email: string, password: string): Promise<void> {
+  async function signup(email: string, password: string): Promise<IUser> {
     return createUserWithEmailAndPassword(auth, email, password)
-    .then(() => Promise.resolve())
+    .then((credentials) => {
+      const { uid } = credentials.user
+      return Promise.resolve({email, uid})
+    })
     .catch((err) => Promise.reject(err))
   }
 
