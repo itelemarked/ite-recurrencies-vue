@@ -16,7 +16,7 @@ export interface IUser {
  */
 
 import { ref } from "vue";
-import { auth } from "../../../js/firebase";
+import { auth } from "../../../libs/firebase";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 

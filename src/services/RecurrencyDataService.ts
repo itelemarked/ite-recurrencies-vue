@@ -1,6 +1,6 @@
 import { collection, getDocs } from "firebase/firestore";
 import { DateTime } from "../models/DateTime";
-import { firestore } from "../js/firebase";
+import { firestore } from "../libs/firebase";
 import { Recurrency } from "../models/Recurrency";
 import { OFFSET_STRING } from "./SettingsService";
 
