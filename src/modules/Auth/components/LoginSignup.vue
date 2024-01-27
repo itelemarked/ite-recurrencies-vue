@@ -107,11 +107,19 @@
   import InputControl, { VALIDATORS, type Exposed } from '@/modules/Auth/components/InputControl.vue'
   import { useAuth } from '../use/useAuth';
 
+  const props = defineProps<{
+    errors: string[]
+  }>()
+
+  const emits = defineEmits<{
+    login: [value: {email: string, password: string}],
+    signup: [value: {email: string, password: string}]
+  }>()
 
   /** state */
   const loginOrSignup = ref<'login' | 'signup'>('login')
-  const errors = ref<string[]>([])
-  const { user, login, signup } = useAuth()
+  // const errors = ref<string[]>([])
+  const { login, signup } = useAuth()
 
   /** email control */
   const emailCtrl = ref<Exposed>()
@@ -124,37 +132,46 @@
 
   function onLoginOrSignup() {
     if (loginOrSignup.value === 'login') {
-      onLogin()
+      emits('login', {email: emailCtrlValue.value, password: passwordCtrlValue.value})
     } else {
-      onSignup()
+      emits('signup', {email: emailCtrlValue.value, password: passwordCtrlValue.value})
     }
   }
 
-  function onLogin() {
-    errors.value = []
-    login(emailCtrlValue.value, passwordCtrlValue.value)
-      .then((usr) => {
-        // TO DELETE, TESTING ONLY
-        console.log(usr)
-      })
-      .catch((err) => {
-        // TODO: better error message
-        errors.value.push(err.code)
-      })
-  }
 
-  // TODO
-  function onSignup() {
-    errors.value = []
-    signup(emailCtrlValue.value, passwordCtrlValue.value)
-      .then((usr) => {
-        // TO DELETE, TESTING ONLY
-        console.log(usr)
-      })
-      .catch((err) => {
-        // TODO: better error message
-        errors.value.push(err.code)
-      })
-  }
+  // function onLoginOrSignup() {
+  //   if (loginOrSignup.value === 'login') {
+  //     onLogin()
+  //   } else {
+  //     onSignup()
+  //   }
+  // }
+
+  // function onLogin() {
+  //   errors.value = []
+  //   login(emailCtrlValue.value, passwordCtrlValue.value)
+  //     .then((usr) => {
+  //       // TO DELETE, TESTING ONLY
+  //       console.log(usr)
+  //     })
+  //     .catch((err) => {
+  //       // TODO: better error message
+  //       errors.value.push(err.code)
+  //     })
+  // }
+
+  // // TODO
+  // function onSignup() {
+  //   errors.value = []
+  //   signup(emailCtrlValue.value, passwordCtrlValue.value)
+  //     .then((usr) => {
+  //       // TO DELETE, TESTING ONLY
+  //       console.log(usr)
+  //     })
+  //     .catch((err) => {
+  //       // TODO: better error message
+  //       errors.value.push(err.code)
+  //     })
+  // }
 
 </script>

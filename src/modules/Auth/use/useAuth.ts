@@ -1,20 +1,17 @@
 import { computed, ref } from "vue";
-import { auth } from "../../../libs/firebase";
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
-
-export interface IUser {
-  email: string
-  uid: string
-}
+import { firebaseApp } from "../../Firebase";
+import type { User } from "../interfaces/user";
 
 /* 
 * User is undefined if it hasn't been fetched, null if logged out, a IUser instance otherwise.
 * Globally defined in order to be a singleton
 */
-const _user = ref<IUser | null | undefined>()
+const _user = ref<User | null | undefined>()
 
 export function useAuth() {
+  const auth = getAuth(firebaseApp)
 
   /* a read only user */
   const user = computed(() => _user.value)
@@ -27,7 +24,7 @@ export function useAuth() {
     }
   })
 
-  async function login(email: string, password: string): Promise<IUser> {
+  async function login(email: string, password: string): Promise<User> {
     return signInWithEmailAndPassword(auth, email, password)
     // .then(() => Promise.resolve())
     .then((credentials) => {
@@ -41,7 +38,7 @@ export function useAuth() {
     return signOut(auth)
   }
 
-  async function signup(email: string, password: string): Promise<IUser> {
+  async function signup(email: string, password: string): Promise<User> {
     return createUserWithEmailAndPassword(auth, email, password)
     .then((credentials) => {
       const { uid } = credentials.user

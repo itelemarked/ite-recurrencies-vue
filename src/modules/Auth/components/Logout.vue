@@ -6,7 +6,7 @@
       expand="block"
       shape="round"
       color="danger"
-      @click="logout"
+      @click="emits('logout')"
     >
       Logout
     </IonButton>
@@ -16,13 +16,22 @@
 <script setup lang="ts">
   import { IonButton } from '@ionic/vue';
   import { computed } from 'vue';
-  import { useAuth } from '@/modules/Auth/use/useAuth';
+  // import { useAuth } from '@/modules/Auth/use/useAuth';
+  import type { User } from '../interfaces/user';
   
-  const { user, logout } = useAuth()
+  // const { user, logout } = useAuth()
+  const props = defineProps<{
+    user: User | null | undefined
+  }>()
+
+  const emits = defineEmits<{
+    logout: []
+  }>()
+
   const userValue = computed(() => {
-    if (user.value === undefined) return 'User is undefined'
-    if (user.value === null) return 'User is null'
-    return user.value?.email
+    if (props.user === undefined) return 'User is undefined'
+    if (props.user === null) return 'User is null'
+    return props.user?.email
   })
 
 </script>
