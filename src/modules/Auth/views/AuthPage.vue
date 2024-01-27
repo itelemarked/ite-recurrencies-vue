@@ -41,18 +41,11 @@
       </div>
 
       <div v-else-if="user === null" class="login-signup-wrapper">
-        <LoginSignup
-          :errors="loginSignupErrors"
-          @login="onLogin"
-          @signup="onSignup"
-        />
+        <LoginSignup/>
       </div>
 
       <div v-else  class="logout-wrapper">
-        <Logout
-          :user="user"
-          @logout="onLogout"
-        />
+        <Logout/>
       </div>
 
     </ion-content>
@@ -64,46 +57,13 @@
   import LoginSignup from '../components/LoginSignup.vue';
   import Logout from '../components/Logout.vue'
   import { useAuth } from '../use/useAuth';
-  import { computed, ref } from 'vue';
+  import { computed } from 'vue';
   
-  const { user, login, signup, logout } = useAuth()
+  const { user } = useAuth()
   const userValue = computed(() => {
     if (user.value === undefined) return 'User is undefined'
     if (user.value === null) return 'User is null'
     return user.value?.email
   })
-
-  const loginSignupErrors = ref<string[]>([])
-
-  function onLogin({email, password}: {email: string, password: string}) {
-    loginSignupErrors.value = []
-    login(email, password)
-      .then((usr) => {
-        // TO DELETE, TESTING ONLY
-        console.log(usr)
-      })
-      .catch((err) => {
-        // TODO: better error message
-        loginSignupErrors.value.push(err.code)
-      })
-  }
-
-  // TODO
-  function onSignup({email, password}: {email: string, password: string}) {
-    loginSignupErrors.value = []
-    signup(email, password)
-      .then((usr) => {
-        // TO DELETE, TESTING ONLY
-        console.log(usr)
-      })
-      .catch((err) => {
-        // TODO: better error message
-        loginSignupErrors.value.push(err.code)
-      })
-  }
-
-  function onLogout() {
-    logout()
-  }
 </script>
   
