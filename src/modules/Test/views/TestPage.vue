@@ -28,4 +28,12 @@
 <script setup lang="ts">
   import { IonPage, IonHeader, IonTitle, IonButtons, IonToolbar, IonMenuButton, IonContent } from '@ionic/vue'
   
+  import dayjs from '../use/useDayjs'
+
+  const timestamp = "2014-06-31 12:00"
+  const tz = "Asia/Taipei"
+
+  console.log(dayjs.tz(timestamp, tz).add(4, 'day').format())
+  // console.log(dayjs.utc(timestamp).tz(tz).format())
+  
 </script>
