@@ -1,6 +1,6 @@
 import { collection, getDocs } from "firebase/firestore";
 import { DateTime } from "../models/DateTime";
-import { firestore } from "../modules/Firebase/firebase";
+import { db } from "../modules/Firebase/firebase";
 import { Recurrency } from "../models/Recurrency";
 import { OFFSET_STRING } from "./SettingsService";
 
@@ -21,7 +21,7 @@ export class RecurrencyDataService {
   // }
 
   async getAll(): Promise<Recurrency[]> {
-    const coll = await getDocs(collection(firestore, "recurrencies"));
+    const coll = await getDocs(collection(db, "recurrencies"));
     return coll.docs.map(doc => {
       const id = doc.id
       const title = doc.data().title

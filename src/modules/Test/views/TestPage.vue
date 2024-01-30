@@ -18,7 +18,22 @@
   
     <ion-content class="ion-padding">
 
-      <p>Testing page works</p>
+      <p>Todos</p>
+
+      <ion-item>
+        <ion-label>Title</ion-label>
+        <ion-input type="text" v-model="todoTitle"></ion-input>
+      </ion-item>
+      <ion-button @click="saveTodo">save Todo</ion-button>
+
+      <div>
+        <div v-for="todo in todos">
+        <TodoListItem
+          :todo="todo"
+        />
+        </div>
+      </div>
+
 
     </ion-content>
   </ion-page>
@@ -26,14 +41,21 @@
 
 
 <script setup lang="ts">
-  import { IonPage, IonHeader, IonTitle, IonButtons, IonToolbar, IonMenuButton, IonContent } from '@ionic/vue'
+  import { IonPage, IonHeader, IonTitle, IonButtons, IonToolbar, IonMenuButton, IonContent, IonItem, IonLabel, IonInput, IonButton } from '@ionic/vue'
+  import { ref } from 'vue';
+  import TodoListItem from '../components/TodoListItem.vue';
+  import { type Todo } from '../interface/Todo';
+  import * as useTodos from '../use/useTodos'
   
-  import dayjs from '../use/useDayjs'
+  const todoTitle = ref('')
 
-  const timestamp = "2014-06-31 12:00"
-  const tz = "Asia/Taipei"
+  const todos = useTodos.todos
 
-  console.log(dayjs.tz(timestamp, tz).add(4, 'day').format())
-  // console.log(dayjs.utc(timestamp).tz(tz).format())
-  
+  function saveTodo() {
+    const title = todoTitle.value
+    const completed = false
+    useTodos.addTodo({title, completed})
+  }
+
+
 </script>

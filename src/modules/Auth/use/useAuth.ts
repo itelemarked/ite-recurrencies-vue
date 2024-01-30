@@ -1,7 +1,7 @@
 import { computed, ref } from "vue";
 import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
-import { firebaseApp } from "../../Firebase";
+import { firebaseApp } from "../../Firebase/firebase";
 import type { User } from "../interfaces/user";
 
 /* 
