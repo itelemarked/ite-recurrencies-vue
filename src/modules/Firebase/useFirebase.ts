@@ -1,8 +1,9 @@
 
 import { QueryDocumentSnapshot, collection, getDocs, getFirestore, type DocumentData, onSnapshot, type Unsubscribe } from "firebase/firestore";
 import { useAuth } from "../Auth/use/useAuth";
+import { firebaseApp } from "./firebase";
 
-import { firebaseApp } from ".";
+
 import { watch } from "vue";
 import type { Recurrency } from "@/modules/Recurrencies/models/Recurrency";
 

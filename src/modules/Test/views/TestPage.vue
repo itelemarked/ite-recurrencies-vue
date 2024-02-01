@@ -18,7 +18,7 @@
   
     <ion-content class="ion-padding">
 
-      <p>Testing page works</p>
+      <p>test page works!</p>
 
     </ion-content>
   </ion-page>
