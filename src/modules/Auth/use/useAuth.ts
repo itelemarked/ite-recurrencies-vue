@@ -8,50 +8,40 @@ import type { User } from "../interfaces/user";
 * User is undefined if it hasn't been fetched, null if logged out, a IUser instance otherwise.
 * Globally defined in order to be a singleton
 */
-const _user = ref<User | null | undefined>()
+const _user = ref<User | null>(null)
 
-export function useAuth() {
-  const auth = getAuth(firebaseApp)
+const auth = getAuth(firebaseApp)
 
-  /* a read only user */
-  const user = computed(() => _user.value)
+/* a read only user */
+export const user = computed(() => _user.value)
 
-  onAuthStateChanged(auth, (usr) => {
-    if (usr === null) {
-      _user.value = null
-    } else {
-      _user.value = { email: usr.email!, uid: usr.uid }
-    }
+onAuthStateChanged(auth, (usr) => {
+  if (usr === null) {
+    _user.value = null
+  } else {
+    _user.value = { email: usr.email!, uid: usr.uid }
+  }
+})
+
+export async function login(email: string, password: string): Promise<User> {
+  return signInWithEmailAndPassword(auth, email, password)
+  // .then(() => Promise.resolve())
+  .then((credentials) => {
+    const { uid } = credentials.user
+    return Promise.resolve({email, uid})
   })
+  .catch((err) => Promise.reject(err))
+}
 
-  async function login(email: string, password: string): Promise<User> {
-    return signInWithEmailAndPassword(auth, email, password)
-    // .then(() => Promise.resolve())
-    .then((credentials) => {
-      const { uid } = credentials.user
-      return Promise.resolve({email, uid})
-    })
-    .catch((err) => Promise.reject(err))
-  }
+export async function logout(): Promise<void> {
+  return signOut(auth)
+}
 
-  async function logout(): Promise<void> {
-    return signOut(auth)
-  }
-
-  async function signup(email: string, password: string): Promise<User> {
-    return createUserWithEmailAndPassword(auth, email, password)
-    .then((credentials) => {
-      const { uid } = credentials.user
-      return Promise.resolve({email, uid})
-    })
-    .catch((err) => Promise.reject(err))
-  }
-
-  return {
-    user,
-    login,
-    logout,
-    signup
-  }
-
+export async function signup(email: string, password: string): Promise<User> {
+  return createUserWithEmailAndPassword(auth, email, password)
+  .then((credentials) => {
+    const { uid } = credentials.user
+    return Promise.resolve({email, uid})
+  })
+  .catch((err) => Promise.reject(err))
 }

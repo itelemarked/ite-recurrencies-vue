@@ -105,13 +105,13 @@
   import { IonButton,IonText } from '@ionic/vue'
   import { ref } from 'vue'
   import InputControl, { VALIDATORS, type Exposed } from '@/modules/Auth/components/InputControl.vue'
-  import { useAuth } from '../use/useAuth';
+  import * as useAuth from '../use/useAuth';
 
 
   /** state */
   const loginOrSignup = ref<'login' | 'signup'>('login')
   const errors = ref<string[]>([])
-  const { user, login, signup } = useAuth()
+  const { user, login, signup } = useAuth
 
   /** email control */
   const emailCtrl = ref<Exposed>()

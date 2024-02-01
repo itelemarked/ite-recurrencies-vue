@@ -32,7 +32,7 @@
 
 
 <script setup lang="ts">
-  import { useAuth } from '@/modules/Auth/use/useAuth';
+  import * as useAuth from '@/modules/Auth/use/useAuth';
   import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonButton, IonIcon, IonMenuButton, alertController, modalController, IonSpinner } from '@ionic/vue';
   import { computed, ref, watch, type Ref } from 'vue';
 
@@ -40,7 +40,7 @@
   import type { User } from '@/modules/Auth/interfaces/user';
 
   import { collection, getDocs, getFirestore, onSnapshot } from 'firebase/firestore';
-  import { firebaseApp } from '@/modules/Firebase';
+  import { firebaseApp } from '@/modules/Firebase/firebase';
   import {  } from 'vue';
 
 
@@ -54,7 +54,7 @@
       onChanges
     }
   }
-  const user = useAuth().user
+  const user = useAuth.user
   const recurrencies = useRecurrencies().recurrencies
 
   const db = getFirestore(firebaseApp)

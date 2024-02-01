@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 
 <template>
   <div class="ite-logout">
@@ -16,9 +17,9 @@
 <script setup lang="ts">
   import { IonButton } from '@ionic/vue';
   import { computed } from 'vue';
-  import { useAuth } from '@/modules/Auth/use/useAuth';
+  import * as useAuth from '@/modules/Auth/use/useAuth';
   
-  const { user, logout } = useAuth()
+  const { user, logout } = useAuth
   const userValue = computed(() => {
     if (user.value === undefined) return 'User is undefined'
     if (user.value === null) return 'User is null'

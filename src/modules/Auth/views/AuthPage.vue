@@ -56,10 +56,10 @@
   import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonMenuButton, IonSpinner, IonInput, IonLabel, IonItem, IonButton, IonIcon, IonNote } from '@ionic/vue';
   import LoginSignup from '../components/LoginSignup.vue';
   import Logout from '../components/Logout.vue'
-  import { useAuth } from '../use/useAuth';
+  import * as useAuth from '../use/useAuth';
   import { computed } from 'vue';
   
-  const { user } = useAuth()
+  const { user } = useAuth
   const userValue = computed(() => {
     if (user.value === undefined) return 'User is undefined'
     if (user.value === null) return 'User is null'
