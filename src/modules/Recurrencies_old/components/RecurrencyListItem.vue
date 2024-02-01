@@ -34,10 +34,11 @@
 <script setup lang="ts">
   import { IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, IonIcon, IonProgressBar } from '@ionic/vue';
   import { createOutline, trashOutline } from 'ionicons/icons';
-  import { Recurrency } from '../models/Recurrency';
   import { computed, ref } from 'vue';
-  import { OFFSET_STRING } from '../services/SettingsService';
+
+  import { Recurrency } from '../models/Recurrency';
   import { DateTime } from '../models/DateTime';
+  import { OFFSET_STRING } from '../use/SettingsService';
 
   /**
     inputs/outputs
@@ -104,3 +105,4 @@
     return `${str}s`
   }
 </script>
+../z - Archives/services/SettingsService../use/SettingsService

@@ -26,14 +26,26 @@
 
 
 <script setup lang="ts">
-  import { IonPage, IonHeader, IonTitle, IonButtons, IonToolbar, IonMenuButton, IonContent } from '@ionic/vue'
+  import { IonPage, IonHeader, IonTitle, IonButtons, IonToolbar, IonMenuButton, IonContent, onIonViewWillEnter, onIonViewWillLeave } from '@ionic/vue'
+  import * as useRecurrencies from '../use/useRecurrencies'
+  import * as mockStore from '../use/useMockStore'
+  import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router';
+  import { watch } from 'vue';
+
+  useRecurrencies.TEST()
+
+  // let subscriptions: (()=>void)[] = []
   
-  import dayjs from '../use/useDayjs'
+  // onIonViewWillEnter(() => {
+  //   console.log('ionViewWillEnter')
+  //   subscriptions.push(watch(store.recurrencies, (newRecurrencies) => {
+  //     console.log('recurrencies changed')
+  //   }, {deep: true}))
+  // })
 
-  const timestamp = "2014-06-31 12:00"
-  const tz = "Asia/Taipei"
-
-  console.log(dayjs.tz(timestamp, tz).add(4, 'day').format())
-  // console.log(dayjs.utc(timestamp).tz(tz).format())
+  // onIonViewWillLeave(() => {
+  //   console.log('ionViewWillLeave')
+  //   subscriptions.forEach(fn => fn())
+  // })
   
 </script>

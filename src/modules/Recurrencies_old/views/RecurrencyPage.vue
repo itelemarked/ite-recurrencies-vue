@@ -42,35 +42,13 @@
   // import { RouterLink, RouterView } from 'vue-router'
   import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonButton, IonIcon, IonMenuButton, alertController, modalController, IonSpinner } from '@ionic/vue';
   import { addOutline } from "ionicons/icons"
-  import { reactive, watch } from 'vue';
+  import { onMounted, onUnmounted, reactive, watch } from 'vue';
   import RecurrencyEditModal from '../components/RecurrencyEditModal.vue';
-  import { recurrencyDataService } from '../services/RecurrencyDataService';
+  import { recurrencyDataService } from '../use/RecurrencyDataService';
   import RecurrencyList from '../components/RecurrencyList.vue';
-  import { useAuth } from '../modules/Auth/use/useAuth';
   import { useRouter } from 'vue-router';
 
   const router = useRouter()
-  const user = useAuth().user
-
-  const unwatchUser = watch(user, (newUser) => {
-    console.log('user changed!')
-    console.log(newUser)
-    if(newUser === null) {
-      a()
-      router.replace({ path: '/auth' })
-    }
-  })
-
-  function a() {
-    unwatchUser()
-  }
-
-  // watch(useAuth().user, () => {
-  //   if (!useAuth().user.value) {
-  //     console.log('should be redirected to auth...')
-  //     router.replace({name: 'auth'})
-  //   }
-  // })
 
   async function onCreateRecurrency() {
     const modal = await modalController.create({
@@ -82,4 +60,4 @@
     await modal.present()
   }
 
-</script>../../services/RecurrencyDataService
+</script>

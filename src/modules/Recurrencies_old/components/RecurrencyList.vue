@@ -17,10 +17,12 @@
 
 <script setup lang="ts">
   import RecurrencyListItem from './RecurrencyListItem.vue';
+
   import { alertController, IonList } from '@ionic/vue';
   import { ref, type Ref } from 'vue';
-  import { recurrencyDataService } from '../services/RecurrencyDataService';
+
   import type { Recurrency } from '../models/Recurrency';
+  import { recurrencyDataService } from '../use/RecurrencyDataService';
 
   const recurrencyListRef = ref()
 
@@ -66,4 +68,4 @@
   .alert-wrapper .ite-delete-button {
     color: var(--ion-color-danger);
   }
-</style>
+</style>../z - Archives/RecurrencyDataService../z - Archives/services/RecurrencyDataService../use/RecurrencyDataService
