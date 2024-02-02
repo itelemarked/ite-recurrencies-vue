@@ -2,21 +2,21 @@ import { addDoc, collection, deleteDoc, doc, onSnapshot, setDoc, type Unsubscrib
 import { ref, watch } from "vue";
 import type { User } from "../../Auth/interfaces/user";
 import type { Todo } from "../interface/Todo";
-import { useAuth } from "../../Auth/use/useAuth";
+import * as useAuth from "../../Auth/use/useAuth";
 import { db } from "../../Firebase/firebase";
 
 
-const user = useAuth().user
+const user = await useAuth.getCurrentUser()
 
 export const todos = ref<Todo[]>([])
 
 let todoListener: Unsubscribe
 
-watch(user, (newUser) => {
+useAuth.onChange((newUser) => {
   if (todoListener !== undefined) todoListener()
   if (user === null || user === undefined) return;
 
-  const query = collection(db, `users/${user.value?.uid}/todos`);
+  const query = collection(db, `users/${newUser?.uid}/todos`);
   todoListener = onSnapshot(query, (queryItems) => {
     const newTodos = queryItems.docs.map(doc => {
       const id = doc.id
@@ -29,10 +29,10 @@ watch(user, (newUser) => {
 
 
 export async function addTodo(todo: Omit<Todo, 'id'>) {
-  if(user === null || user === undefined) return;
+  if(user === null) return;
 
   const data = { ...todo }
-  const docRef = doc(collection(db, `users/${user.value?.uid}/todos`));
+  const docRef = doc(collection(db, `users/${user?.uid}/todos`));
   await setDoc(docRef, data);
 }
 
@@ -40,5 +40,5 @@ export async function addTodo(todo: Omit<Todo, 'id'>) {
 export async function deleteTodo(todoId: string) {
   if(user === null || user === undefined) return;
 
-  await deleteDoc(doc(db, `users/${user.value?.uid}/todos`, todoId));
+  await deleteDoc(doc(db, `users/${user?.uid}/todos`, todoId));
 }

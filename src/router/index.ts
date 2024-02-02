@@ -20,15 +20,15 @@ export const router = createRouter({
 })
 
 
-router.beforeEach((to, from) => {
-  const isAuthenticated = useAuth.user.value !== null
+router.beforeEach(async (to, from) => {
+  const isAuthenticated = await useAuth.getCurrentUser() !== null
   if (!isAuthenticated && to.meta.requiresAuth) return { name: 'auth' }
   return true
 })
 
 
 /** Redirect automatically to Auth if user is logged out */
-watch(useAuth.user, (newUser) => {
+useAuth.onChange((newUser) => {
   // console.log('user changed!')
   if(newUser === null) {
     router.replace({ path: '/auth' })

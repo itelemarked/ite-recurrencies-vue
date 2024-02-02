@@ -1,47 +1,67 @@
-import { computed, ref } from "vue";
+import { computed, ref, watch, type WatchOptions } from "vue";
 import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
-import { firebaseApp } from "../../Firebase/firebase";
+import { auth } from "../../Firebase/firebase";
 import type { User } from "../interfaces/user";
 
-/* 
-* User is undefined if it hasn't been fetched, null if logged out, a IUser instance otherwise.
-* Globally defined in order to be a singleton
-*/
+/* keeps a track of the fetched user */
 const _user = ref<User | null>(null)
 
-const auth = getAuth(firebaseApp)
 
-/* a read only user */
-export const user = computed<User | null>(() => _user.value)
+/* CRUD Operations - GET (subscribe to changes) */
+export function onChange(callback: (user: User | null) => void, options?: WatchOptions) {
+  watch(_user, callback, options)
+}
 
-onAuthStateChanged(auth, (usr) => {
-  if (usr === null) {
-    _user.value = null
-  } else {
-    _user.value = { email: usr.email!, uid: usr.uid }
-  }
-})
+/* CRUD Operations - GET (Once) */
+export function getCurrentUser(): Promise<User | null> {
+  const user = computed(() => _user.value)
+  return Promise.resolve(user.value)
+}
 
+/* CRUD Operations - CREATE (New one) */
 export async function login(email: string, password: string): Promise<User> {
-  return signInWithEmailAndPassword(auth, email, password)
-  // .then(() => Promise.resolve())
-  .then((credentials) => {
+  try {
+    const credentials = await signInWithEmailAndPassword(auth, email, password)
     const { uid } = credentials.user
-    return Promise.resolve({email, uid})
-  })
-  .catch((err) => Promise.reject(err))
+    const user = { uid, email }
+    return Promise.resolve(user)
+  } catch(err) {
+    return Promise.reject(err)
+  }
 }
 
-export async function logout(): Promise<void> {
-  return signOut(auth)
-}
-
+/* CRUD Operations - CREATE (existing one) */
 export async function signup(email: string, password: string): Promise<User> {
-  return createUserWithEmailAndPassword(auth, email, password)
-  .then((credentials) => {
+  try {
+    const credentials = await createUserWithEmailAndPassword(auth, email, password)
     const { uid } = credentials.user
-    return Promise.resolve({email, uid})
-  })
-  .catch((err) => Promise.reject(err))
+    const user = { uid, email }
+    return Promise.resolve(user)
+  } catch(err) {
+    return Promise.reject(err)
+  }
 }
+
+/* CRUD Operations - DELETE */
+export async function logout(): Promise<void> {
+  try {
+    await signOut(auth)
+    Promise.resolve()
+  } catch(err) {
+    Promise.reject(err)
+  }
+}
+
+
+(function onCreate() {
+
+  onAuthStateChanged(auth, (usr) => {
+    if (usr === null) {
+      _user.value = null
+    } else {
+      _user.value = { email: usr.email!, uid: usr.uid }
+    }
+  })
+
+}())

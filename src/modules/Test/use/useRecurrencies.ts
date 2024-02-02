@@ -12,8 +12,12 @@ type DeepPartial<T> = {
   [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K]
 }
 
-/* a private reference used for this module only (see recurrencies below)*/
+/* a private reference used for this module only, listen to change and keep an updated value of the datas */
 const _recurrencies = ref<Recurrency[]>([]);
+
+/* the firebase ref for 'recurrencies', depends on current user */
+const recurrenciesCollectionRef = (user: User) => collection(db, `users/${user.uid}/recurrencies`)
+const recurrencyDocRef = (user: User, recurrencyId: string) => doc(db, 'users', user.uid, 'recurrencies', recurrencyId)
 
 /* a getter utility function */
 function _toRecurrency(recurrencyData: QueryDocumentSnapshot<DocumentData, DocumentData>): Recurrency {
@@ -33,8 +37,8 @@ function _userChangeWatcher(callback: (newRecurrencies: Recurrency[]) => void) {
     if (newUser === null) {
       callback([])
     } else {
-      const recurrenciesColl = collection(db, `users/${newUser.uid}/recurrencies`)
-      unsubscribeToDatasChange = onSnapshot(recurrenciesColl, (query) => {
+      const recurrenciesQuery = recurrenciesCollectionRef(newUser)
+      unsubscribeToDatasChange = onSnapshot(recurrenciesQuery, (query) => {
         const mappedRecurrencies = query.docs.map(doc => _toRecurrency(doc))
         callback(mappedRecurrencies)
       })
@@ -47,7 +51,7 @@ function _userChangeWatcher(callback: (newRecurrencies: Recurrency[]) => void) {
 
 
 /* CRUD Operations - GET (subscribe to changes) */
-function onChanges(callback: (newData: Recurrency[]) => void, options: WatchOptions): WatchStopHandle {
+function onChanges(callback: (newData: Recurrency[]) => void, options?: WatchOptions): WatchStopHandle {
   return watch(_recurrencies, callback, options)
 }
 
@@ -60,12 +64,12 @@ async function get(): Promise<Recurrency[]> {
 
 /* CRUD Operations - CREATE */
 async function add(data: Omit<Recurrency, 'id'>): Promise<void> {
-  const user = useAuth.user
-  if (user.value === null) return Promise.resolve()
+  const user = await useAuth.getCurrentUser()
+  if (user === null) return Promise.resolve()
 
-  const recurrenciesColl = collection(db, `users/${user.value.uid}/recurrencies`)
+  const recurrenciesQuery = recurrenciesCollectionRef(user)
   try {
-    await addDoc(recurrenciesColl, data)
+    await addDoc(recurrenciesQuery, data)
     return Promise.resolve()
   } catch(err) {
     return Promise.reject(err)
@@ -75,12 +79,12 @@ async function add(data: Omit<Recurrency, 'id'>): Promise<void> {
 
 /* CRUD Operations - UPDATE */
 async function update(dataId: string, dataOptions: DeepPartial<Omit<Recurrency, 'id'>>): Promise<void> {
-  const user = useAuth.user
-  if (user.value === null) return Promise.resolve()
+  const user = await useAuth.getCurrentUser()
+  if (user === null) return Promise.resolve()
 
-  const recurrenciesColl = doc(db, `users/${user.value.uid}/recurrencies/${dataId}`)
+  const recurrencyQuery = recurrencyDocRef(user, dataId)
   try {
-    await updateDoc(recurrenciesColl, dataOptions)
+    await updateDoc(recurrencyQuery, dataOptions)
     return Promise.resolve()
   } catch(err) {
     return Promise.reject(err)
@@ -90,12 +94,12 @@ async function update(dataId: string, dataOptions: DeepPartial<Omit<Recurrency, 
 
 /* CRUD Operations - DELETE */
 async function remove(dataId: string): Promise<void> {
-  const user = useAuth.user
-  if (user.value === null) return Promise.resolve()
+  const user = await useAuth.getCurrentUser()
+  if (user === null) return Promise.resolve()
 
-  const recurrenciesColl = doc(db, `users/${user.value.uid}/recurrencies/${dataId}`)
+  const recurrencyQuery = recurrencyDocRef(user, dataId)
   try {
-    await deleteDoc(recurrenciesColl)
+    await deleteDoc(recurrencyQuery)
     return Promise.resolve()
   } catch(err) {
     return Promise.reject(err)
@@ -106,7 +110,7 @@ async function remove(dataId: string): Promise<void> {
 /* code which will executes on module creation */
 (function onCreate() {
 
-  watch(useAuth.user, _userChangeWatcher(newRecurrencies => {
+  useAuth.onChange(_userChangeWatcher(newRecurrencies => {
     _recurrencies.value = newRecurrencies
   }))
 
@@ -140,6 +144,8 @@ export {
 
 export function TEST() {
 
+  onChanges((newRec) => console.log(newRec), {immediate: true})
+
   function createRandomRec(): Recurrency {
     const random = Math.random().toString()
     return {
@@ -161,8 +167,8 @@ export function TEST() {
 
   // setTimeout(() => {
   //   console.log('----- timeout 2 -----')
-  //   useAuth.login('aaa@ite-recurrency.com', '111111')
-  // }, 8000);
+  //   add(createRandomRec())
+  // }, 2000);
 
   // setTimeout(() => {
   //   console.log('----- timeout 3 -----')
