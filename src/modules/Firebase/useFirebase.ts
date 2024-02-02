@@ -1,17 +1,12 @@
 
-import { QueryDocumentSnapshot, collection, getDocs, getFirestore, type DocumentData, onSnapshot, type Unsubscribe } from "firebase/firestore";
-import * as useAuth from "../Auth/use/useAuth";
+import { collection, getFirestore } from "firebase/firestore";
 import { firebaseApp } from "./firebase";
-
-
-import { watch } from "vue";
-import type { Recurrency } from "@/modules/Recurrencies/models/Recurrency";
 
 const db = getFirestore(firebaseApp)
 
-const user = useAuth.user
+// const user = useAuth.user
 
-const coll = collection(db, `users/${user?.value?.uid}/recurrencies`)
+// const coll = collection(db, `users/${user?.value?.uid}/recurrencies`)
 
 // export async function get(user: User | null | undefined, )
 

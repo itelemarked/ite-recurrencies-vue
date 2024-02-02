@@ -13,7 +13,7 @@ const _user = ref<User | null>(null)
 const auth = getAuth(firebaseApp)
 
 /* a read only user */
-export const user = computed(() => _user.value)
+export const user = computed<User | null>(() => _user.value)
 
 onAuthStateChanged(auth, (usr) => {
   if (usr === null) {

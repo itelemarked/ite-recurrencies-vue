@@ -111,7 +111,7 @@
   /** state */
   const loginOrSignup = ref<'login' | 'signup'>('login')
   const errors = ref<string[]>([])
-  const { user, login, signup } = useAuth
+  const { login, signup } = useAuth
 
   /** email control */
   const emailCtrl = ref<Exposed>()

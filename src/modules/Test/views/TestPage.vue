@@ -33,19 +33,5 @@
   import { watch } from 'vue';
 
   useRecurrencies.TEST()
-
-  // let subscriptions: (()=>void)[] = []
-  
-  // onIonViewWillEnter(() => {
-  //   console.log('ionViewWillEnter')
-  //   subscriptions.push(watch(store.recurrencies, (newRecurrencies) => {
-  //     console.log('recurrencies changed')
-  //   }, {deep: true}))
-  // })
-
-  // onIonViewWillLeave(() => {
-  //   console.log('ionViewWillLeave')
-  //   subscriptions.forEach(fn => fn())
-  // })
   
 </script>
