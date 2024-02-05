@@ -17,8 +17,8 @@
 
 <script setup lang="ts">
   import { IonItem, IonLabel, IonButton } from '@ionic/vue';
-  import { type Todo } from '../interface/Todo'
-  import * as useTodos from '../use/useTodos'
+  import { type Todo } from './Todo'
+  import * as useTodos from './useTodos'
 
   const props = defineProps<{
     todo: Todo
@@ -29,3 +29,4 @@
   }
 </script>
 
+../Todos/Todo./useTodos

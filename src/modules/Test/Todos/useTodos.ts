@@ -1,7 +1,7 @@
 import { addDoc, collection, deleteDoc, doc, onSnapshot, setDoc, type Unsubscribe } from "firebase/firestore";
 import { ref, watch } from "vue";
 import type { User } from "../../Auth/interfaces/user";
-import type { Todo } from "../interface/Todo";
+import type { Todo } from "./Todo";
 import * as useAuth from "../../Auth/use/useAuth";
 import { db } from "../../Firebase/firebase";
 

@@ -27,10 +27,7 @@
 
 <script setup lang="ts">
   import { IonPage, IonHeader, IonTitle, IonButtons, IonToolbar, IonMenuButton, IonContent, onIonViewWillEnter, onIonViewWillLeave } from '@ionic/vue'
-  import * as useRecurrencies from '../use/useRecurrencies'
-  import * as mockStore from '../use/useMockStore'
-  import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router';
-  import { watch } from 'vue';
+  import * as useRecurrencies from '../Recurrencies/useRecurrencies'
 
   useRecurrencies.TEST()
   
